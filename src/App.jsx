@@ -7,11 +7,11 @@ function App() {
   const [movie, setMovie] = useState(null);
   const [input, setInput] = useState("One piece");
   const [favourite, setFavourite] = useState([]);
-
+  const API_KEY = import.meta.env.VITE_API_KEY;
   useEffect(() => {
     async function fetchMovies() {
       const req = await fetch(
-        `http://www.omdbapi.com/?apikey=dc2fc370&s=${input}`
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=${input}`
       );
       const res = await req.json();
       setMovie(res.Search);
@@ -46,9 +46,18 @@ function App() {
       <div className="mt-[5px]">
         <p className="font-semibold text-[25px]">Favourites</p>
         <div className="w-[100%] mt-[15px]">
-          {favourite.map((movie) => (
-            <FavMovieCard image={movie} />
-          ))}
+          <div>
+            {favourite.map((movie) => (
+              <div
+                className="inline-block"
+                onClick={() =>
+                  setFavourite((prev) => prev.filter((fav) => fav !== movie))
+                }
+              >
+                <FavMovieCard image={movie} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
